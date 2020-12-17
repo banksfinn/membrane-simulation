@@ -1,0 +1,56 @@
+from flask import Flask, request
+from scipy.optimize import fsolve, least_squares
+import scipy.integrate as integrate
+import numpy as np
+
+app = Flask(__name__)
+
+@app.route('/rc_flow')
+def get_calculations():
+    if 'x' in request.args:
+        x = request.args.get('x')
+    else:
+        x = [-2.74968827e-03, -8.30176851e-05, 3.74111351e-02]
+    flowrate = float(request.args.get('flowrate'))
+    tmp = float(request.args.get('tmp'))
+    interval = float(request.args.get('interval'))
+
+    def fn(tmp, flowrate, a, b, c):
+        return (flowrate * a) / (tmp - flowrate * b) + flowrate * d
+    
+    return {'flow': fn(tmp, flowrate, x[0], x[1], x[2]) * interval}
+
+@app.route('/rc_model')
+def create_model():
+    def model(param, x):
+        return (param[0] * x[1]) / (x[0] - x[1] * param[1]) + x[1] * param[2]
+
+    def fun(param, x, y):
+        return model(param, x) - y
+
+    def jac(param, x, y):
+        J = np.empty((len(x[0]), len(param)))
+        for i in range(len(x[0])):
+            J[i, 0] = x[1, i] / (x[0, i] - x[1, i]*param[1])
+            J[i, 1] = (x[1, i]**2 * param[0]) / (x[0, i] - x[1, i] * param[1])**2
+            J[i, 2] = x[1, i]
+        return J
+
+    y_data_raw = request.args.get('y')
+    y_data = [float(a) for a in y_data_raw.split(',')]
+
+    x_1_data_raw = request.args.get('x1')
+    x_1_data = [float(a) for a in x_1_data_raw.split(',')]
+
+    x_2_data_raw = request.args.get('x2')
+    x_2_data = [float(a) for a in x_2_data_raw.split(',')]
+
+    x_data = np.array([x_1_data, x_2_data])
+
+    param0 = np.array([0.01, -0.1, 0.01])
+    res = least_squares(fun, param0, jac=jac, args=(x_data, y_data), verbose=1)
+    return {'params': res.x.tolist()}
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
