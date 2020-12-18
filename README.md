@@ -29,7 +29,11 @@ We should now have all of the code locally. However, we still need to install so
 
 Another key to installing the requirements is a package manager, which exists solely on the command line.
 
-If you have a Mac, Brew can be installed with the CLI command: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`. Then, `export PATH="/usr/local/opt/python/libexec/bin:$PATH"` should be run, so that the `python` command points to the correct version.
+If you have a Mac, Brew can be installed with the CLI command: 
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+```
 
 If you have a Windows computer, instructions for Choco can be found [here](https://chocolatey.org/install).
 
@@ -66,7 +70,9 @@ These should be all of the packages needed to be installed for both the model tr
 All of the model training code exists within the `model_training` folder within this repository.
 
 Once we have navigated our CLI to be within this folder, we can run the model_training on the example data by running the following command:
-`python train_model.py --graph --file example-data.csv`
+```
+python train_model.py --graph --file example-data.csv
+```
 
 `train_model.py` takes in 3 input arguments: 
 1. `--graph` is optional, and displays a graph of the trained model alongside the input data
