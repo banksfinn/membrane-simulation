@@ -8,14 +8,14 @@ In addition, there is a section for getting the code locally on your machine, st
 
 ### Command Line Interface
 
-The majority of running and building this code is done through a command line interface (Terminal for Mac, Windows Powershell for Windows), otherwise referred to as CLI. A quick guide to Terminal's navigation can be found [https://www.digitalocean.com/community/tutorials/basic-linux-navigation-and-file-management](here), and one for Windows Powershell can be found [https://programminghistorian.org/en/lessons/intro-to-powershell](here).
+The majority of running and building this code is done through a command line interface (Terminal for Mac, Windows Powershell for Windows), otherwise referred to as CLI. A quick guide to Terminal's navigation can be found (https://www.digitalocean.com/community/tutorials/basic-linux-navigation-and-file-management)[here], and one for Windows Powershell can be found (https://programminghistorian.org/en/lessons/intro-to-powershell)[here].
 
 ### Git Installation
 
 To start, we must first download the code base. The primary way (at least how I do it) of doing so is through SSH, where requires a slight bit of setup. 
-1. Github account, which can be done [https://github.com/](here).
-2. Installing git locally, the instructions for which can be found [https://git-scm.com/book/en/v2/Getting-Started-Installing-Git](here). 
-3. Connecting git to SSH, instructions found [https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/connecting-to-github-with-ssh](here)
+1. Github account, which can be done (https://github.com/)[here].
+2. Installing git locally, the instructions for which can be found (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)[here]. 
+3. Connecting git to SSH, instructions found (https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/connecting-to-github-with-ssh)[here]
 
 Once this is done and all set up, we can begin by cloning the repo from the command line interface, in the folder that we want the repository to be copied to.
 ```git@github.com:banksfinn/membrane-simulation.git```
@@ -28,7 +28,7 @@ Another key to installing the requirements is a package manager, which exists so
 
 If you have a Mac, Brew can be installed with the CLI command: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`. Then, `export PATH="/usr/local/opt/python/libexec/bin:$PATH"` should be run, so that the `python` command points to the correct version.
 
-If you have a Windows computer, instructions for Choco can be found [https://chocolatey.org/install](here).
+If you have a Windows computer, instructions for Choco can be found (https://chocolatey.org/install)[here].
 
 Once these have been installed, we can install the packages required to run this repository, all through the command line interface.
 
