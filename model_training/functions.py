@@ -1,3 +1,4 @@
+# Import all of the functions that we need
 from scipy.optimize import least_squares
 import numpy as np
 import matplotlib.pyplot as plt
@@ -5,26 +6,27 @@ import csv
 import numpy.ma as ma
 
 # This is the general equation that we are modeling
+# param is a list, where param[0] = a, param[1] = b, param[2] = d
+# x is also a list, where x[0] = TMP, x[1] = flow rate
 def model(param, x):
     return (param[0] * x[1]) / (x[0] - x[1] * param[1]) + x[1] * param[2]
 
 # This is the objective function that we want to be as close to 0 as possible
 # Aka, we want the model - y to be 0
-def fun(param, x, y):
+def objective_function(param, x, y):
     return model(param, x) - y
 
 # This is the Jacobian of the above model, with partial derivatives taken with
 # respect to the parameters
 def jac(param, x, y):
-    
+    # We establish an empty 2D array (input size x num parameters)
     J = np.empty((len(x[0]), len(param)))
-    for i in range(len(x[0])):
-        # df/dparam1
-        J[i, 0] = x[1, i] / (x[0, i] - x[1, i]*param[1])
-        # df/dparam2
-        J[i, 1] = (x[1, i]**2 * param[0]) / (x[0, i] - x[1, i] * param[1])**2
-        # df/dparam3
-        J[i, 2] = x[1, i]
+    # dF/da
+    J[:, 0] = x[1, :] / (x[0, :] - x[1, :] * param[1])
+    # dF/db
+    J[:, 1] = (x[1, :]**2 * param[0]) / (x[0, :] - x[1, :] * param[1])**2
+    # dF/dd
+    J[:, 2] = x[1, :]
     return J
 
 # Create a model from the data input
@@ -34,7 +36,6 @@ def create_model(data, verbose):
     y_data = np.array(data['y'], dtype=np.float)
     x_1_data = np.array(data['x_1'], dtype=np.float)
     x_2_data = np.array(data['x_2'], dtype=np.float)
-
     # We have to combine the multiple dependent variables into a single
     x_data = np.array([x_1_data, x_2_data])
 
@@ -45,7 +46,7 @@ def create_model(data, verbose):
     v = 1 if verbose else 0
 
     # Run our least_squares analysis
-    res = least_squares(fun, initial_guesses, jac=jac, args=(x_data, y_data), verbose=v)
+    res = least_squares(objective_function, initial_guesses, jac=jac, args=(x_data, y_data), verbose=v)
 
     # Return the 'x' values, which are the parameters it has learned
     return res.x
@@ -80,7 +81,9 @@ def generate_graph(data, results):
         plt.plot(x_values, y_values)
 
     # Plot with the flowrates attached
-    plt.legend(flowrates+flowrates)
+    plt.legend([a + ' model' for a in flowrates]+[a + ' original' for a in flowrates])
+    plt.ylabel('Steady-state permeate flux (L/(m^2*h))')
+    plt.xlabel('TMP (bar)')
     plt.show()
 
 # Get the data from the CSV file

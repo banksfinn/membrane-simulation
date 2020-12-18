@@ -1,14 +1,17 @@
+# Here is where we import in packages that we want to use
 import argparse
+# from (file_name) import (function_names)
+# here is where we import the actual functions that we use in this
 from functions import get_data, generate_graph, create_model
 
-# Just an easy way of checking arguments passed
+# These 5 lines take in the command line arguments
 parser = argparse.ArgumentParser(description='Retrain the model.')
 parser.add_argument('--graph', default=False, action='store_true')
 parser.add_argument('--filename', nargs=1, help='Data to train on (csv)')
 parser.add_argument('--verbose', default=False, action='store_true', help='Show the metrics for the training (how well it did')
 args = parser.parse_args()
 
-# Check to make sure it is CSV
+# This makes sure that the filename of the inputted file is a CSV
 if args.filename[0][-3:] != 'csv':
     print('The file needs to be in csv format. Please see the example data')
     exit(1)

@@ -1,9 +1,17 @@
+// Import the necessary packages
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 
+
+// THIS SHOULD BE THE SAME MODEL THAT WAS TRAINED UPON
+function getFlux(params, tmp, flowrate) {
+    return (flowrate * params['a']) / (tmp - flowrate * params['b']) + flowrate * params['c']
+}
+
+// Create the header of the CSV
 function stateToCSV(state) {
     let string1 = "";
     let string2 = "";
@@ -14,11 +22,7 @@ function stateToCSV(state) {
     return string1.slice(0, -1) + '\n' + string2.slice(0, -1)
 }
 
-// THIS SHOULD BE THE SAME MODEL THAT WAS TRAINED UPON
-function getFlux(params, tmp, flowrate) {
-    return (flowrate * params['a']) / (tmp - flowrate * params['b']) + flowrate * params['c']
-}
-
+// Create a comma delimited string from the state and data
 function createCSV(state, data) {
     let string = stateToCSV(state) + '\n\n';
     let keys = Object.keys(data);
@@ -35,23 +39,30 @@ function createCSV(state, data) {
     return string
 }
 
-export class SpotifyAPI extends React.Component {
 
+export class MembraneAPI extends React.Component {
+
+    // This is run at the start of the webpage loading
     constructor(props) {
         super(props);
+
+        // These are the inputs, saved in the 'state' of MembraneAPI
         this.state = {
             'permeate_valve': true,
             'feed_valve': false,
             'buffer_valve': true,
-            'p_init_mass': 100,
+            'p_init_mass': 0,
             'membrane_selected': '1'
         };
-        // HERE IS WHERE DIFFERENT MEMBRANES ARE SET
+
+        // This is where each of the different membrane details are set
         this.membrane = {
             '1': {'dex_rej': 0.92, 'rb_rej': 0.01, 'surface_area': 1},
             '2': {'dex_rej': 0.92, 'rb_rej': 0.1, 'surface_area': 1},
             '3': {'dex_rej': 0.65, 'rb_rej': 0.01, 'surface_area': 1}
         };
+
+        // Here is where we define the "loss" functions for incorrect valve position
         this.valveConstants = {
             'buffer_closed_volume_percentage_loss_per_hour': 0.1,
             'feed_open_volume_percentage_loss_per_hour': 0.2,
@@ -74,16 +85,15 @@ export class SpotifyAPI extends React.Component {
         this.onBufferValv = this.onBufferValv.bind(this);
     }
 
-
-
-    async handleCalculations(){
+    handleCalculations(){
         let membrane = this.membrane[this.state.membrane_selected];
 
-        // Conditions from Membrane
+        // Membrane data
         let dex_rej = membrane['dex_rej'];
         let rb_rej = membrane['rb_rej'];
         let surface_area = membrane['surface_area'];
 
+        // Buffer initial conditions (these are constants)
         let buffer_dex_conc = this.state.b_dex_conc;
         let buffer_rb_conc = this.state.b_rb_conc;
 
@@ -133,11 +143,12 @@ export class SpotifyAPI extends React.Component {
             // Perm flow out = buffer flow in
             let buffer_dex_added = perm_flow * buffer_dex_conc / 1000 * this.molarMass['dex'];
             let buffer_rb_added = perm_flow * buffer_rb_conc / 1000 * this.molarMass['rb'];
+
             // We now convert to mass to correctly remove it from the overall flow
-            permeate_dex_conc.push((permeate_dex_mass[permeate_dex_mass.length - 1] + delta_dex_mass) / (total_perm_vol));
-            permeate_rb_conc.push((permeate_rb_mass[permeate_rb_mass.length - 1] + delta_rb_mass) / (total_perm_vol));
+            permeate_dex_conc.push((permeate_dex_mass[permeate_dex_mass.length - 1] + delta_dex_mass) / (total_perm_vol * this.molarMass['dex']));
+            permeate_rb_conc.push((permeate_rb_mass[permeate_rb_mass.length - 1] + delta_rb_mass) / (total_perm_vol * this.molarMass['rb']));
 
-
+            // We add in the mass of the substances that have passed through the filter
             permeate_dex_mass.push(permeate_dex_mass[permeate_dex_mass.length - 1] + delta_dex_mass);
             permeate_rb_mass.push(permeate_rb_mass[permeate_rb_mass.length - 1] + delta_rb_mass);
 
@@ -145,12 +156,12 @@ export class SpotifyAPI extends React.Component {
             // We can simply remove the mass from the feed
             feed_dex_mass.push(feed_dex_mass[feed_dex_mass.length - 1] - delta_dex_mass + buffer_dex_added);
             // Since the volume of the system remains constant
-            feed_dex_conc.push(feed_dex_mass[feed_dex_mass.length - 1] / volume_system);
+            feed_dex_conc.push(feed_dex_mass[feed_dex_mass.length - 1] / (volume_system * this.molarMass['dex']));
 
             // We can simply remove the mass from the feed
             feed_rb_mass.push(feed_rb_mass[feed_rb_mass.length - 1] - delta_rb_mass + buffer_rb_added);
             // Since the volume of the system remains constant
-            feed_rb_conc.push(feed_rb_mass[feed_rb_mass.length - 1] / volume_system);
+            feed_rb_conc.push(feed_rb_mass[feed_rb_mass.length - 1] / (volume_system * this.molarMass['rb']));
 
             // If any of the valves are in the incorrect position, we want to lower volume of system / tmp
             if (!this.state.permeate_valve) {
@@ -164,12 +175,34 @@ export class SpotifyAPI extends React.Component {
             }
         }
 
+        // Return the arrays of all of this data
         return {'time': time_array, 'permeate_dex_mass': permeate_dex_mass, 'permeate_dex_conc': permeate_dex_conc, 'flow_rates': flow_rates,
         'feed_dex_conc': feed_dex_conc, 'feed_dex_mass': feed_dex_mass, 'permeate_rb_mass': permeate_rb_mass, 'permeate_rb_conc': permeate_rb_conc,
             'feed_rb_conc': feed_rb_conc, 'feed_rb_mass': feed_rb_mass}
     }
 
+    // This gets run when the user clicks on the submit button
+    // It will run the calculations, then add them all to a CSV file and send it to the browser to download
+    downloadCSVFile(e){
+        // This prevents the page from being refreshed when clicked
+        e.preventDefault();
+        // This is where the simulation is run
+        let result = this.handleCalculations();
+        // We have to create an object to download
+        const element = document.createElement("a");
+        // Create the CSV file from it
+        const file = new Blob([createCSV(this.state, result)],
+            {type: 'text/plain;charset=utf-8'});
+        // Associate the new object's link with the file created
+        element.href = URL.createObjectURL(file);
+        element.download = "membrane_data.csv";
+        document.body.appendChild(element);
+        // Simulate a click to download the file
+        element.click();
+        return false;
+    };
 
+    // Not super important functions
     _onSelect (option) {
         this.setState({membrane_selected: option['value']});
     }
@@ -186,26 +219,7 @@ export class SpotifyAPI extends React.Component {
         this.setState({buffer_valve: event.target.value === 'on'});
     }
 
-    async downloadTxtFile(e){
-        e.preventDefault();
-        let result = await this.handleCalculations();
-        const element = document.createElement("a");
-        const file = new Blob([createCSV(this.state, result)],
-            {type: 'text/plain;charset=utf-8'});
-        element.href = URL.createObjectURL(file);
-        element.download = "membrane_data.csv";
-        document.body.appendChild(element);
-        element.click();
-        return false;
-    };
 
-    async get_flow(flowrate, tmp, interval){
-        let result = 0;
-        await fetch(`/rc_flow?flowrate=${flowrate}&tmp=${tmp}&interval=${interval}`).then(res => res.json()).then(function(output) {
-            result = output['flow'];
-        });
-        return result
-    };
 
     render() {
         return (
@@ -244,9 +258,6 @@ export class SpotifyAPI extends React.Component {
                         <TextField id="p_dex_conc" label="Dextran"
                                    onChange={()=>{this.state.p_dex_conc = parseFloat(document.getElementById('p_dex_conc').value)}}
                                    helperText="Permeate Dextran Concentration (mol/L)"/>
-                        {/*<TextField id="p_dex_fitc_conc" label="Dextran-FITC"*/}
-                        {/*           onChange={()=>{this.state.p_dex_fitc_conc = parseFloat(document.getElementById('p_dex_fitc_conc').value)}}*/}
-                        {/*           helperText="Permeate Dextran-FITC Concentration (mol/L)"/>*/}
 
                     </div>
                     <div>
@@ -267,10 +278,6 @@ export class SpotifyAPI extends React.Component {
                         <TextField id="f_dex_conc" label="Dextran"
                                    onChange={()=>{this.state.f_dex_conc = parseFloat(document.getElementById('f_dex_conc').value)}}
                                    helperText="Feed Dextran Concentration (mol/L)"/>
-                        {/*<TextField id="f_dex_fitc_conc" label="Dextran-FITC"*/}
-                        {/*           onChange={()=>{this.state.f_dex_fitc_conc = parseFloat(document.getElementById('f_dex_fitc_conc').value)}}*/}
-                        {/*           helperText="Feed Dextran-FITC Concentration (mol/L)"/>*/}
-
                     </div>
                     <div>
                         <h5 className="intro_header">Buffer Reservoir</h5>
@@ -290,17 +297,12 @@ export class SpotifyAPI extends React.Component {
                         <TextField id="b_dex_conc" label="Dextran"
                                    onChange={()=>{this.state.b_dex_conc = parseFloat(document.getElementById('b_dex_conc').value)}}
                                    helperText="Buffer Dextran Concentration (mol/L)"/>
-                        {/*<TextField id="b_dex_fitc_conc" label="Dextran-FITC"*/}
-                        {/*           onChange={()=>{this.state.b_dex_fitc_conc = parseFloat(document.getElementById('b_dex_fitc_conc').value)}}*/}
-                        {/*           helperText="Buffer Dextran-FITC Concentration (mol/L)"/>*/}
-
                     </div>
                     <div>
                         <h5 className="intro_header">Membrane Selection</h5>
                         <Dropdown className='dropdown' options={this.options} onChange={this._onSelect} value={this.default_option}/>
                     </div>
-                    <button className='submit' onClick={this.downloadTxtFile.bind(this)}>Download</button>
-
+                    <button className='submit' onClick={this.downloadCSVFile.bind(this)}>Download</button>
                 </Form>
             </div>
         )

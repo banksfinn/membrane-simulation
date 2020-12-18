@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
-import { SpotifyAPI } from './SpotifyComponents'
+import { MembraneAPI } from './MembraneComponents'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
       <div className="base-app">
-        <SpotifyAPI>temp</SpotifyAPI>
+        <MembraneAPI>temp</MembraneAPI>
       </div>
   );
 }

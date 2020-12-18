@@ -1,6 +1,6 @@
 {
-  "name": "spotify-chronological",
-  "homepage": "http://banksfinn.github.io/spotify-chronological",
+  "name": "membrane-simulation",
+  "homepage": "http://banksfinn.github.io/membrane-simulation",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
