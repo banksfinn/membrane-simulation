@@ -18,7 +18,10 @@ To start, we must first download the code base. The primary way (at least how I 
 3. Connecting git to SSH, instructions found [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/connecting-to-github-with-ssh).
 
 Once this is done and all set up, we can begin by cloning the repo from the command line interface, in the folder that we want the repository to be copied to.
-```git@github.com:banksfinn/membrane-simulation.git```
+
+```
+git clone git@github.com:banksfinn/membrane-simulation.git
+```
 
 We should now have all of the code locally. However, we still need to install some packages in order to run the code, which is split up into the model training and the front end/simulation.
 
