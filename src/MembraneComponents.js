@@ -8,7 +8,7 @@ import 'react-dropdown/style.css';
 
 // THIS SHOULD BE THE SAME MODEL THAT WAS TRAINED UPON
 function getFlux(params, tmp, flowrate) {
-    return (flowrate * params['a']) / (tmp - flowrate * params['b']) + flowrate * params['c']
+    return (flowrate * params['a']) / (tmp - flowrate * params['b']) + flowrate * params['d']
 }
 
 // Create the header of the CSV
@@ -75,7 +75,7 @@ export class MembraneAPI extends React.Component {
         };
 
         // THESE ARE THE PARAMETERS OF THE MODEL
-        this.modelParameters = {a: -0.002749688274522191, b: -8.301768508494198e-05, c: 0.03741113513434366};
+        this.modelParameters = {a: -0.002749688274522191, b: -8.301768508494198e-05, d: 0.03741113513434366};
 
         this.options = ['1', '2', '3'];
         this.default_option = this.options[0];
@@ -173,6 +173,7 @@ export class MembraneAPI extends React.Component {
             if (!this.state.buffer_valve) {
                 flow_rate = flow_rate - flow_rate * this.state.interval / 60 * this.valveConstants.buffer_closed_volume_percentage_loss_per_hour;
             }
+
         }
 
         // Return the arrays of all of this data
