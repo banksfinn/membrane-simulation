@@ -4,6 +4,8 @@ There are two main sections in this code base: the model training and the front 
 
 In addition, there is a section for getting the code locally on your machine, starting it up, and installing the requisite packages in order to make changes to it. Note that I am super happy to help out with any questions or walk you through it, and while I know the startup installation can be tedious, it is a lot easier with someone helping.
 
+The main website is here: https://banksfinn.github.io/membrane-simulation/
+
 ## Installation
 
 ### Command Line Interface
