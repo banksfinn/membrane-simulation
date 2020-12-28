@@ -4,6 +4,8 @@ There are two main sections in this code base: the model training and the front 
 
 In addition, there is a section for getting the code locally on your machine, starting it up, and installing the requisite packages in order to make changes to it. Note that I am super happy to help out with any questions or walk you through it, and while I know the startup installation can be tedious, it is a lot easier with someone helping.
 
+The main website is here: https://banksfinn.github.io/membrane-simulation/
+
 ## Installation
 
 ### Command Line Interface
@@ -18,7 +20,10 @@ To start, we must first download the code base. The primary way (at least how I 
 3. Connecting git to SSH, instructions found [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/connecting-to-github-with-ssh).
 
 Once this is done and all set up, we can begin by cloning the repo from the command line interface, in the folder that we want the repository to be copied to.
-```git@github.com:banksfinn/membrane-simulation.git```
+
+```
+git clone git@github.com:banksfinn/membrane-simulation.git
+```
 
 We should now have all of the code locally. However, we still need to install some packages in order to run the code, which is split up into the model training and the front end/simulation.
 
@@ -26,7 +31,11 @@ We should now have all of the code locally. However, we still need to install so
 
 Another key to installing the requirements is a package manager, which exists solely on the command line.
 
-If you have a Mac, Brew can be installed with the CLI command: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`. Then, `export PATH="/usr/local/opt/python/libexec/bin:$PATH"` should be run, so that the `python` command points to the correct version.
+If you have a Mac, Brew can be installed with the CLI command: 
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+```
 
 If you have a Windows computer, instructions for Choco can be found [here](https://chocolatey.org/install).
 
@@ -63,7 +72,9 @@ These should be all of the packages needed to be installed for both the model tr
 All of the model training code exists within the `model_training` folder within this repository.
 
 Once we have navigated our CLI to be within this folder, we can run the model_training on the example data by running the following command:
-`python train_model.py --graph --file example-data.csv`
+```
+python train_model.py --graph --file example-data.csv
+```
 
 `train_model.py` takes in 3 input arguments: 
 1. `--graph` is optional, and displays a graph of the trained model alongside the input data
