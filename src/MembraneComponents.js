@@ -233,7 +233,7 @@ export class MembraneAPI extends React.Component {
                                     helperText="Volumetric Flow Rate of Recirculation (mL/min)"/>
                         <TextField id="tmp" label="TMP"
                                    onChange={()=>{this.state.tmp = parseFloat(document.getElementById('tmp').value)}}
-                                   helperText="Transmembrane Pressure (atm)"/>
+                                   helperText="Transmembrane Pressure (bar)"/>
                         <TextField id="runtime" label="Runtime"
                                    onChange={()=>{this.state.runtime = parseInt(document.getElementById('runtime').value)}}
                                    helperText="Experimental Runtime (minutes)"/>
