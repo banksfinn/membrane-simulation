@@ -8,7 +8,16 @@ The main website is here: https://banksfinn.github.io/membrane-simulation/
 
 ## Jupyter Notebook
 
-Note that if you are using the Jupyter notebook, most of these steps are not necessary.
+Note that if you are using the Jupyter notebook, most of these steps for installation are not necessary. The important part is the Functions section (which describes what function each does), but all installation steps are not necessary.
+
+## Making Changes in Github Pages
+
+In order to make the changes to the github pages, open the Windows Powershell to the proper folder (the base directory), and run the following code.
+
+```
+git pull
+npm run deploy
+```
 
 ## Installation
 
