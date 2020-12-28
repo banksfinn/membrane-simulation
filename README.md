@@ -6,6 +6,10 @@ In addition, there is a section for getting the code locally on your machine, st
 
 The main website is here: https://banksfinn.github.io/membrane-simulation/
 
+## Jupyter Notebook
+
+Note that if you are using the Jupyter notebook, most of these steps are not necessary.
+
 ## Installation
 
 ### Command Line Interface
@@ -249,7 +253,7 @@ d = 1.24975394
 e = -4.54824055
 
 #### Simulation Change
-Now that we have the new parameter (a, b, d, e) values, we need to represent this change in the simulation. First, we want to change the function that calculates the value, `getFlux`, which is currently on line 10 in `MembraneComponents.js`
+Now that we have the new parameter (a, b, d, e) values, we need to represent this change in the simulation. First, we want to change the function that calculates the value, `getFlux`, which is currently on line 11 in `MembraneComponents.js`
 ```
 function getFlux(params, tmp, flowrate) {
     return (flowrate * params['a']) / (tmp - flowrate * params['b']) + flowrate * params['d']
@@ -261,7 +265,7 @@ function getFlux(params, tmp, flowrate) {
     return (flowrate * params['a']) / (tmp - flowrate * params['b']) + flowrate * params['d'] * params['a'] + params['e']
 }
 ```
-Now, we have to reflect the new values that we generated using our model in the initial conditions of `MembraneAPI`, in the `this.modelParameters` dictionary.
+Now, we have to reflect the new values that we generated using our model in the initial conditions of `MembraneAPI`, in the `this.modelParameters` dictionary, found on line 78.
 ```
 this.modelParameters = {a: -0.002749688274522191, b: -8.301768508494198e-05, d: 0.03741113513434366};
 ```
