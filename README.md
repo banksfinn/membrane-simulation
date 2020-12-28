@@ -54,7 +54,7 @@ If you have a Windows computer, instructions for Choco can be found [here](https
 
 Once these have been installed, we can install the packages required to run this repository, all through the command line interface.
 
-#### Packages
+#### Packages (only for non Jupyter)
 
 These command can be run by copy pasting the block of code below into the CLI, and pressing enter.
 
