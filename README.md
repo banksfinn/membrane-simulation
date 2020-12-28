@@ -54,8 +54,11 @@ git push
 ```
 
 `git pull` gets the data from the remote repository, and makes sure that you can push your changes.
+
 `git add [INSERT FILES HERE]` specifies which files should be added. My personal way of determining which files should be added is running `git status`, then running `git add [filename]` for each file that I want to add. For example, I might add `model_training.ipynb` in the `model_training` folder by running the command `git add model_training/model_training.ipynb` (this is the most likely command you will need).
+
 `git commit -m 'MESSAGE'` allows you to attach a message to the change you are making, such as `git commit -m 'updated the model'`
+
 `git push` pushes your changes to the remote repository
 
 ### Simulation Changes
