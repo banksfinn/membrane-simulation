@@ -245,9 +245,13 @@ export class MembraneAPI extends React.Component {
                         <h5 className="intro_header">Permeate Reservoir</h5>
                         <div className="radio-div">
                             <div>Valve</div>
-                            <div onChange={this.onPermValv}>
-                                <input type="radio" value='on' name='perm_valv'/> Open '
-                                <input type="radio" value='off' name='perm_valv'/> Closed
+                            <div onChange={this.onPermValv} style={{display:'flex', 'flex-direction':'column'}}>
+                                <div>
+                                    <input type="radio" value='on' name='perm_valv'/> Open
+                                </div>
+                                <div>
+                                    <input type="radio" value='off' name='perm_valv'/> Closed
+                                </div>
                             </div>
                         </div>
                         <TextField id="p_init_mass" label="Mass"
@@ -265,9 +269,13 @@ export class MembraneAPI extends React.Component {
                         <h5 className="intro_header">Feed Reservoir</h5>
                         <div className="radio-div">
                             <div>Valve</div>
-                            <div onChange={this.onFeedValv}>
-                                <input type="radio" value='on' name='feed_valv'/> Open '
-                                <input type="radio" value='off' name='feed_valv'/> Closed
+                            <div onChange={this.onFeedValv} style={{display:'flex', 'flex-direction':'column'}}>
+                                <div>
+                                    <input type="radio" value='on' name='feed_valv'/> Open
+                                </div>
+                                <div>
+                                    <input type="radio" value='off' name='feed_valv'/> Closed
+                                </div>
                             </div>
                         </div>
                         <TextField id="f_init_mass" label="Mass"
@@ -284,9 +292,13 @@ export class MembraneAPI extends React.Component {
                         <h5 className="intro_header">Buffer Reservoir</h5>
                         <div className="radio-div">
                             <div>Valve</div>
-                            <div onChange={this.onBufferValv}>
-                                <input type="radio" value='on' name='buffer_valv'/> Open '
-                                <input type="radio" value='off' name='buffer_valv'/> Closed
+                            <div onChange={this.onBufferValv} style={{display:'flex', 'flex-direction':'column'}}>
+                                <div>
+                                    <input type="radio" value='on' name='buffer_valv'/> Open
+                                </div>
+                                <div>
+                                    <input type="radio" value='off' name='buffer_valv'/> Closed
+                                </div>
                             </div>
                         </div>
                         <TextField id="b_init_mass" label="Mass"
