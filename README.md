@@ -6,24 +6,16 @@ In addition, there is a section for getting the code locally on your machine, st
 
 The main website is here: https://banksfinn.github.io/membrane-simulation/
 
-## Jupyter Notebook
+## Initial Installation
 
-Note that if you are using the Jupyter notebook, most of these steps for installation are not necessary. The important part is the Functions section (which describes what function each does), but all installation steps are not necessary.
-
-## Making Changes in Github Pages
-
-In order to make the changes to the github pages, open the Windows Powershell to the proper folder (the base directory), and run the following code.
-
-```
-git pull
-npm run deploy
-```
-
-## Installation
-
-### Command Line Interface
-
-The majority of running and building this code is done through a command line interface (Terminal for Mac, Windows Powershell for Windows), otherwise referred to as CLI. A quick guide to Terminal's navigation can be found [here](https://www.digitalocean.com/community/tutorials/basic-linux-navigation-and-file-management), and one for Windows Powershell can be found [here](https://programminghistorian.org/en/lessons/intro-to-powershell).
+1. Create github account
+2. Install git, either the [app](https://desktop.github.com/) or the command line tools (discussed below).
+2a. (WINDOWS ONLY) Add git to your environment variables [shown here](https://stackoverflow.com/questions/4492979/git-is-not-recognized-as-an-internal-or-external-command)
+3. Install [node js](https://nodejs.org/en/download/), and select every option available (they aren't spam tools)
+4. Install [brew](https://brew.sh/) (MAC) or [choco](https://chocolatey.org/install) (WINDOWS)
+5. Install python `brew install python` (MAC) or `choco install -y python"
+6. Install jupyter `pip install jupyter`
+7. Clone the repository (see below)
 
 ### Git Installation
 
@@ -40,23 +32,67 @@ git clone git@github.com:banksfinn/membrane-simulation.git
 
 We should now have all of the code locally. However, we still need to install some packages in order to run the code, which is split up into the model training and the front end/simulation.
 
-### Brew/Choco
+### Command Line Interface
 
-Another key to installing the requirements is a package manager, which exists solely on the command line.
+The majority of running and building this code is done through a command line interface (Terminal for Mac, Windows Powershell for Windows), otherwise referred to as CLI. A quick guide to Terminal's navigation can be found [here](https://www.digitalocean.com/community/tutorials/basic-linux-navigation-and-file-management), and one for Windows Powershell can be found [here](https://programminghistorian.org/en/lessons/intro-to-powershell).
 
-If you have a Mac, Brew can be installed with the CLI command: 
+## Making Changes
+
+### Model Training Changes
+
+First, make all of the changes that you want locally within the notebook (or files), and test it out to make sure it works.
+
+Then, if you want to change the repository to reflect these changes, you can either edit them on the Github website (to reflect your own versions) or by uploading your versions through the app / CLI.
+
+For the CLI, this can be done by the following commands (assuming the CLI is pointed towards the correct directory).
+
 ```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+git pull
+git add [INSERT FILES HERE]
+git commit -m 'INSERT MESSAGE HERE'
+git push
 ```
 
-If you have a Windows computer, instructions for Choco can be found [here](https://chocolatey.org/install).
+`git pull` gets the data from the remote repository, and makes sure that you can push your changes.
+`git add [INSERT FILES HERE]` specifies which files should be added. My personal way of determining which files should be added is running `git status`, then running `git add [filename]` for each file that I want to add. For example, I might add `model_training.ipynb` in the `model_training` folder by running the command `git add model_training/model_training.ipynb` (this is the most likely command you will need).
+`git commit -m 'MESSAGE'` allows you to attach a message to the change you are making, such as `git commit -m 'updated the model'`
+`git push` pushes your changes to the remote repository
 
-Once these have been installed, we can install the packages required to run this repository, all through the command line interface.
+### Simulation Changes
 
-#### Packages (only for non Jupyter)
+First, make all of the changes you want to make locally on your machine, and test it out to make sure it works. The website can be tested using the command `npm start`, which will create a local version.
 
-These command can be run by copy pasting the block of code below into the CLI, and pressing enter.
+Then, if you want to deploy the changes to the website (changes will have a minute delay), you can run the following:
+```
+git pull
+npm run deploy
+```
+
+However, this will not change the `master` branch of the repository, so all of your changes will only be local. The remote repository can be updated either by editing the files directly in Github's website, or by running the following command:
+
+```
+git pull
+git add src/MembraneComponents.js
+git commit -m 'INSERT MESSAGE HERE'
+git push
+```
+
+Note that if any other files are changes (most likely not), they must also be added with `git add`
+
+## Model Training
+
+The model training is done either locally or in Jupyter notebook (recommended), and can be found in the `model_training` folder within this repository.
+
+### Jupyter Notebook
+
+All of the code for the Jupyter notebook can be found in `model_training.ipynb`
+
+This can be accessed by navigating our CLI to the `model_training` folder, then running `jupyter notebook`.
+
+This will open a webpage, where we can access the code and modify it accordingly.
+
+### Local Installation
+These are the packages required to run the local installation.
 
 Mac:
 ```
@@ -78,13 +114,7 @@ pip install matplotlib
 pip install argparse
 ```
 
-These should be all of the packages needed to be installed for both the model training and the simulation to run, but I may have missed something.
-
-## Model Training
-
-All of the model training code exists within the `model_training` folder within this repository.
-
-Once we have navigated our CLI to be within this folder, we can run the model_training on the example data by running the following command:
+Once we have navigated our CLI to be within this folder and installed the above packages, we can run the model_training on the example data by running the following command:
 ```
 python train_model.py --graph --file example-data.csv
 ```
@@ -94,14 +124,15 @@ python train_model.py --graph --file example-data.csv
 2. `--file example-data.csv` is required, and should be followed by the filename of the CSV of the data. The easiest way to do this is to move the CSV into the `model_training` folder, then replace `example-date.csv` in the command with the name of the new file.
 3. `--verbose` is an optional flag, and displays the heuristic data about the `least_squares` operation that was run. It can be placed anywhere after `train_model.py`, as long as it is not directly after `--file`
 
-### Code Rundown
-
 Model training is split into two segments: the general main function (`train_model.py`) and the actual calculations (`functions.py`).
 
 `train_model.py` is fully commented, and each line of code should be fully described in the file.
 `functions.py` is a little more complex, but is also heavily commented, and described in more detail below:
 
+### Code Rundown
+
 #### Functions.py
+
 `get_data(file_name)` gets the data from the input CSV, taking in input data (TMP, flowrate) and output data (Flux), and returning it in a Python data structure (dictionary)
 
 `model(param, x)` is the model of the whole equation. It takes in the parameters being trained upon (`param`) and the input data (`x`), and returns the result of that calculation.
@@ -164,7 +195,6 @@ I have found that the easiest way to understand how everything works together is
 
 ### Example 1: Creating a new input
 
-
 Let's say that we want to add in a new input that represents a leak in the feed, which slowly drains the feed as the experiment progresses. The first step is to create the input for the user, which we will take to mean the "leak factor", or the percentage of feed that leaks every hour. We will put this next to the dropdown (as there is the most space for it), and create a new `TextField` component to allow the user to input this. In the current iteration of the code base, this goes on line 304, directly after the `Dropdown` component.
 ```
 <TextField id="leak_factor" label="Leak Factor"
@@ -192,6 +222,24 @@ feed_rb_mass.push(feed_rb_mass[feed_rb_mass.length - 1] - delta_rb_mass + buffer
 ```
 Now, our feed has a leak!
 
+#### Updating the Website / Repository
+
+Finally, we need to update the repository and website to reflect these changes. After checking our changes locally (using `npm start`), we run the following code:
+
+This code will update the master branch
+```
+git pull
+git add src/MembraneComponents.js
+git commit -m 'added a leak to the model'
+git push
+```
+
+This code will update our changes on the website.
+```
+git pull
+npm run deploy
+```
+
 ### Example 2: Changing up the model
 
 Let's say that we had a sudden burst of inspiration, and we wanted to change the model behind the flux calculation. We want to maintain the fact that TMP and flow rate are the two independent variables, but have had a change of heart about the parameters.
@@ -205,6 +253,8 @@ F(a, b, d, e, tmp, flow) = (a * flow) / (tmp - b * flow) + a * d * flow + e
 As this is a fundamental model change, we have to calculate the new optimal parameters using `train_model.py`, and use the function and new parameters in simulation's `getFlux`.
 
 #### New Optimal Parameters
+This section was created based on the raw code, but can similarly be followed for the Juypter notebook. The only difference is that the code for training is all in the singular notebook.
+
 We will have to change `model`, `jac`, and `create_model` to reflect this change of heart.
 
 In `model`, we have to change the function output to reflect our new equation, leading to:
@@ -285,6 +335,23 @@ this.modelParameters = {a: 0.02575323, b: -1.53290494, d: 1.24975394, e: -4.5482
 
 And voila! We have made this (questionable) change to the code base, and the model reflect our new equation.
 
+#### Updating the Website / Repository
+
+Finally, we need to update the repository and website to reflect these changes. After checking our changes locally (using `npm start`), we run the following code:
+
+This code will update the master branch
+```
+git pull
+git add src/MembraneComponents.js
+git add model_training/*
+git commit -m 'changed up the Flux model'
+git push
+```
+Side note: `git add model_training/*` will add all changed files in that directory, so it will work for either changes in the Jupyter notebook or in the raw files.
 
 
-
+This code will update our changes on the website.
+```
+git pull
+npm run deploy
+```
