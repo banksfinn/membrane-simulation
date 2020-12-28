@@ -75,7 +75,7 @@
   "scripts": {
     "start": "export $(cat .env | xargs) && node scripts/start.js",
     "start-api": "cd api && venv/bin/flask run --no-debugger",
-    "build": "export $(cat .env | xargs) && node scripts/build.js",
+    "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
