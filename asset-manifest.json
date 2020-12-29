@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/membrane-simulation/static/css/main.a0218a7d.chunk.css",
+    "main.css": "/membrane-simulation/static/css/main.b589caf9.chunk.css",
     "main.js": "/membrane-simulation/static/js/main.c8210ddb.chunk.js",
     "main.js.map": "/membrane-simulation/static/js/main.c8210ddb.chunk.js.map",
     "runtime-main.js": "/membrane-simulation/static/js/runtime-main.34ea7628.js",
     "runtime-main.js.map": "/membrane-simulation/static/js/runtime-main.34ea7628.js.map",
-    "static/css/2.01e693d8.chunk.css": "/membrane-simulation/static/css/2.01e693d8.chunk.css",
-    "static/js/2.a74d87e6.chunk.js": "/membrane-simulation/static/js/2.a74d87e6.chunk.js",
-    "static/js/2.a74d87e6.chunk.js.map": "/membrane-simulation/static/js/2.a74d87e6.chunk.js.map",
+    "static/css/2.2a80ca15.chunk.css": "/membrane-simulation/static/css/2.2a80ca15.chunk.css",
+    "static/js/2.f3440275.chunk.js": "/membrane-simulation/static/js/2.f3440275.chunk.js",
+    "static/js/2.f3440275.chunk.js.map": "/membrane-simulation/static/js/2.f3440275.chunk.js.map",
     "index.html": "/membrane-simulation/index.html",
-    "precache-manifest.2b76d2b51b421e2bef393395b8e8742f.js": "/membrane-simulation/precache-manifest.2b76d2b51b421e2bef393395b8e8742f.js",
+    "precache-manifest.d69e891d80ef897d0bf07cd6ab468889.js": "/membrane-simulation/precache-manifest.d69e891d80ef897d0bf07cd6ab468889.js",
     "service-worker.js": "/membrane-simulation/service-worker.js",
-    "static/css/2.01e693d8.chunk.css.map": "/membrane-simulation/static/css/2.01e693d8.chunk.css.map",
-    "static/css/main.a0218a7d.chunk.css.map": "/membrane-simulation/static/css/main.a0218a7d.chunk.css.map",
-    "static/js/2.a74d87e6.chunk.js.LICENSE.txt": "/membrane-simulation/static/js/2.a74d87e6.chunk.js.LICENSE.txt"
+    "static/css/2.2a80ca15.chunk.css.map": "/membrane-simulation/static/css/2.2a80ca15.chunk.css.map",
+    "static/css/main.b589caf9.chunk.css.map": "/membrane-simulation/static/css/main.b589caf9.chunk.css.map",
+    "static/js/2.f3440275.chunk.js.LICENSE.txt": "/membrane-simulation/static/js/2.f3440275.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.34ea7628.js",
-    "static/css/2.01e693d8.chunk.css",
-    "static/js/2.a74d87e6.chunk.js",
-    "static/css/main.a0218a7d.chunk.css",
+    "static/css/2.2a80ca15.chunk.css",
+    "static/js/2.f3440275.chunk.js",
+    "static/css/main.b589caf9.chunk.css",
     "static/js/main.c8210ddb.chunk.js"
   ]
 }
